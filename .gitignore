@@ -1,0 +1,166 @@
+# Node.js dependencies
+node_modules/*
+jspm_packages/
+
+# Logs
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# Environment variables
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+.env.example
+
+# Build output
+dist/
+build/
+out/
+tmp/
+temp/
+public/
+
+# Temporary files
+tmp/
+temp/
+*.tmp
+*.temp
+
+# Coverage reports
+coverage/
+*.lcov
+
+# Editor directories and files
+.vscode/
+.idea/
+*.sublime-workspace
+*.sublime-project
+*.code-workspace
+*.swp
+*.swo
+
+# Operating system files
+.DS_Store
+Thumbs.db
+ehthumbs.db
+Icon?
+Desktop.ini
+*.user
+*.userosscache
+*.sln.docstates
+
+# Backup files
+*~
+*.bak
+*.swp
+*.old
+*.orig
+
+# NPM package files
+package-lock.json
+yarn.lock
+pnpm-lock.yaml
+
+# TypeScript files
+*.tsbuildinfo
+
+# Database files
+*.sqlite
+*.db
+*.sql
+*.dump
+
+# SASS and CSS files
+*.css
+*.scss
+*.sass
+style.css
+style.min.css
+
+# Build artifacts
+*.tgz
+*.gz
+*.zip
+*.rar
+*.tar
+*.tar.gz
+*.7z
+
+# Documentation
+docs/
+
+# API keys and secrets
+*.pem
+*.key
+*.crt
+
+# Miscellaneous
+*.lock
+*.class
+*.jar
+*.war
+*.exe
+*.dll
+*.so
+*.dylib
+*.pdb
+
+# IDE project files
+*.iml
+*.ipr
+*.iws
+*.idea/
+*.vs/
+.vscode/
+
+# Folders to ignore
+public/uploads/
+public/temp/
+public/logs/
+src/__tests__/
+
+# Miscellaneous
+*.pid
+*.seed
+*.seed.log
+*.log.*
+npm-debug.log*
+yarn-debug.log*
+pnpm-debug.log*
+
+# Git files
+*.orig
+*.patch
+
+# React Native
+.expo/
+*.expo/
+
+# Next.js
+.next/
+out/
+
+# Nuxt.js
+.nuxt/
+dist/
+
+# Gatsby.js
+.cache/
+public/
+
+# Docker
+docker-compose.override.yml
+Dockerfile*
+docker-compose*.yml
+
+# PM2
+*.pm2/
+
+# TypeScript declaration files
+*.d.ts
