@@ -1,8 +1,8 @@
 const express = require('express');
 const router = express.Router();
-const checkController = require('../controllers/checkControllers');
+const { checkEsewaID } = require('../controllers/checkControllers'); // Ensure the path is correct
 
-// Route to check scam reports
-router.get('/check', checkController.checkScamReports);
+// Define the check route
+router.get('/check', checkEsewaID); // Ensure this matches your controller's method
 
 module.exports = router;
