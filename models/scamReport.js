@@ -1,43 +1,19 @@
-// models/ScamReport.js
-
 const { Sequelize, DataTypes } = require('sequelize');
-const sequelize = require('../config/db'); // Import the sequelize instance
+const sequelize = require('../config/db');
 
-// Define the ScamReport model
-const ScamReport = sequelize.define('ScamReport', {
-    scamType: {
+const ScamReport = sequelize.define('ReportedEsewaScams', {
+    esewaID: {
         type: DataTypes.STRING,
         allowNull: false,
-        validate: {
-            isIn: {
-                args: [['esewa', 'phone', 'banking', 'telegram', 'whatsapp', 'facebook']],
-                msg: 'Invalid scam type!'
-            }
-        }
+        unique: true,
     },
-    bankDetails: {
-        type: DataTypes.JSON, // JSON to store banking-specific details
+    details: {
+        type: DataTypes.TEXT,
         allowNull: true,
     },
-    whatsappDetails: {
-        type: DataTypes.JSON, // JSON to store WhatsApp-specific details
-        allowNull: true,
-    },
-    telegramDetails: {
-        type: DataTypes.JSON, // JSON to store Telegram-specific details
-        allowNull: true,
-    },
-    facebookDetails: {
-        type: DataTypes.JSON, // JSON to store Facebook-specific details
-        allowNull: true,
-    },
-    esewaDetails: {
-        type: DataTypes.JSON, // JSON to store Esewa-specific details
-        allowNull: true,
-    },
-    phoneDetails: {
-        type: DataTypes.JSON, // JSON to store Phone-specific details
-        allowNull: true,
+    reportCount: {
+        type: DataTypes.INTEGER,
+        defaultValue: 1,
     },
     createdAt: {
         type: DataTypes.DATE,
@@ -46,10 +22,9 @@ const ScamReport = sequelize.define('ScamReport', {
     updatedAt: {
         type: DataTypes.DATE,
         defaultValue: DataTypes.NOW,
-    }
+    },
 }, {
-    timestamps: true // Automatically create createdAt and updatedAt fields
+    timestamps: true
 });
 
-// Export the model
 module.exports = ScamReport;
