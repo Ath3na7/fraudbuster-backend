@@ -1,15 +1,15 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const sequelize = require('./config/db');
-const reportRoutes = require('./routes/reportRoutes');
-const checkRoutes = require('./routes/checkRoutes');
+const ScamReportmodel =  require('./models/scamReport');
+const Routes = require('./routes/Routes')
 const app = express();
 const PORT = process.env.PORT || 3000;
 
 // Middleware
 app.use(bodyParser.json());
-app.use('/api/report', reportRoutes);
-app.use('/api/check', checkRoutes);
+app.use('/api', Routes);
+
 
 // Sync database and start server
 sequelize.sync()
