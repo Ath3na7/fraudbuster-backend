@@ -1,35 +1,95 @@
-const ScamReport = require('../models/ScamReport');
+const models = require('../models/report/report'); // Adjust the path as necessary
 
-// Function to submit a scam report specifically for Esewa
-async function submitScamReport(reportData) {
+const getModel = (type) => {
+    return models[type] || null;
+};
+
+const createReport = async (req, res) => {
     try {
-        if (!reportData.esewaID) {
-            throw new Error('Esewa ID is required for Esewa scams.');
+        const model = getModel(req.body.scam_type); // Get model based on scam_type
+        if (!model) {
+            return res.status(400).json({ error: 'Invalid scam type' });
         }
+        const report = await model.create(req.body);  // Access model from req
+        res.status(201).json(report);
+    } catch (error) {
+        res.status(400).json({ error: error.message });
+    }
+};
 
-        const existingReport = await ScamReport.findOne({ where: { esewaID: reportData.esewaID } });
+const getAllReports = async (req, res) => {
+    try {
+        const model = getModel(req.params.type); // Type will be passed as a parameter
+        if (!model) {
+            return res.status(400).json({ error: 'Invalid scam type' });
+        }
+        const reports = await model.findAll();
+        res.status(200).json(reports);
+    } catch (error) {
+        res.status(400).json({ error: error.message });
+    }
+};
 
-        if (!existingReport) {
-            // Create a new report
-            return await ScamReport.create({
-                esewaID: reportData.esewaID,
-                details: reportData.details || null,
-                reportCount: 1,
-            });
+const getReportById = async (req, res) => {
+    try {
+        const model = getModel(req.params.type);
+        if (!model) {
+            return res.status(400).json({ error: 'Invalid scam type' });
+        }
+        const report = await model.findByPk(req.params.id);
+        if (report) {
+            res.status(200).json(report);
         } else {
-            // Increment report count
-            existingReport.reportCount += 1;
-            existingReport.details = reportData.details || existingReport.details;
-            await existingReport.save();
-            return existingReport;
+            res.status(404).json({ error: 'Report not found' });
         }
     } catch (error) {
-        console.error('Error saving scam report:', error);
-        throw error;
+        res.status(400).json({ error: error.message });
     }
-}
+};
 
-// Export the function
+const updateReportById = async (req, res) => {
+    try {
+        const model = getModel(req.params.type);
+        if (!model) {
+            return res.status(400).json({ error: 'Invalid scam type' });
+        }
+        const [updated] = await model.update(req.body, {
+            where: { scam_id: req.params.id } // Update by scam_id
+        });
+        if (updated) {
+            const updatedReport = await model.findByPk(req.params.id);
+            res.status(200).json(updatedReport);
+        } else {
+            res.status(404).json({ error: 'Report not found' });
+        }
+    } catch (error) {
+        res.status(400).json({ error: error.message });
+    }
+};
+
+const deleteReportById = async (req, res) => {
+    try {
+        const model = getModel(req.params.type);
+        if (!model) {
+            return res.status(400).json({ error: 'Invalid scam type' });
+        }
+        const deleted = await model.destroy({
+            where: { scam_id: req.params.id } // Delete by scam_id
+        });
+        if (deleted) {
+            res.status(204).json();
+        } else {
+            res.status(404).json({ error: 'Report not found' });
+        }
+    } catch (error) {
+        res.status(400).json({ error: error.message });
+    }
+};
+
 module.exports = {
-    submitScamReport,
+    createReport,
+    getAllReports,
+    getReportById,
+    updateReportById,
+    deleteReportById
 };
