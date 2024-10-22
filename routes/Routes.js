@@ -1,21 +1,21 @@
 const express = require('express');
-const {
-    createReport,
-    getAllReports,
-    getReportById,
-    updateReportById,
-    deleteReportById
-} = require('../controllers/reportController');
-
-const validateReportType = require('../middlewares/validateReportType');
-
 const router = express.Router();
+const reportController = require('../controllers/reportController');
 
-// Apply the middleware to all routes that need report type validation
-router.post('/:type', validateReportType, createReport);
-router.get('/:type', validateReportType, getAllReports);
-router.get('/:type/:id', validateReportType, getReportById);
-router.put('/:type/:id', validateReportType, updateReportById);
-router.delete('/:type/:id', validateReportType, deleteReportById);
+
+// Create a new report
+router.post('/reports', reportController.createReport);
+
+// Get all reports by type
+router.get('/reports/:type', reportController.getAllReports);
+
+// Get a report by ID
+router.get('/reports/:type/:id', reportController.getReportById);
+
+// Update a report by ID
+router.put('/reports/:type/:id', reportController.updateReportById);
+
+// Delete a report by ID
+router.delete('/reports/:type/:id', reportController.deleteReportById);
 
 module.exports = router;

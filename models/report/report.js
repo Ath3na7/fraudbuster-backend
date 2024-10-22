@@ -250,6 +250,26 @@ const WhatsAppReport = sequelize.define('WhatsAppReport', {
     timestamps: false,
 });
 
+// Associations
+Report.hasMany(BankingReport, { foreignKey: 'scam_id', onDelete: 'CASCADE' });
+BankingReport.belongsTo(Report, { foreignKey: 'scam_id' });
+
+Report.hasMany(EsewaReport, { foreignKey: 'scam_id', onDelete: 'CASCADE' });
+EsewaReport.belongsTo(Report, { foreignKey: 'scam_id' });
+
+Report.hasMany(PhoneReport, { foreignKey: 'scam_id', onDelete: 'CASCADE' });
+PhoneReport.belongsTo(Report, { foreignKey: 'scam_id' });
+
+Report.hasMany(SocialMediaReport, { foreignKey: 'scam_id', onDelete: 'CASCADE' });
+SocialMediaReport.belongsTo(Report, { foreignKey: 'scam_id' });
+
+Report.hasMany(TelegramReport, { foreignKey: 'scam_id', onDelete: 'CASCADE' });
+TelegramReport.belongsTo(Report, { foreignKey: 'scam_id' });
+
+Report.hasMany(WhatsAppReport, { foreignKey: 'scam_id', onDelete: 'CASCADE' });
+WhatsAppReport.belongsTo(Report, { foreignKey: 'scam_id' });
+
+
 // Export all models in one object
 module.exports = {
     Report,
