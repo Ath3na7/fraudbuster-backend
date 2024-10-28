@@ -27,7 +27,7 @@ const startServer = async () => {
         console.log('Database synchronized.');
 
         // Start the server
-        const PORT = process.env.PORT || 3000; // Default to port 3000 if not specified
+        const PORT = process.env.PORT || 8000; // Default to port 3000 if not specified
         app.listen(PORT, () => {
             console.log(`Server is running on port ${PORT}`);
         });
