@@ -1,32 +1,43 @@
 const express = require('express');
-const uploadRoutes = require('./routes/uploadRoutes'); // Import the upload routes
-const { ScamReport } = require('./models'); // Adjust the path as needed
-const Report = require('./models/report/report');
-const EsewaReport = require('./models/report/esewaReport');
-const PhoneReport = require('./models/report/phoneReport');
-const BankingReport = require('./models/report/bankingReport');
-const TelegramReport = require('./models/report/telegramReport');
-const WhatsAppReport = require('./models/report/whatsappReport');
-const SocialMediaReport = require('./models/report/socialMediaReport');
-const Search = require('./models/search/search');
-const EsewaSearch = require('./models/search/esewaSearch');
-const PhoneSearch = require('./models/search/phoneSearch');
-const BankingSearch = require('./models/search/bankingSearch');
-const TelegramSearch = require('./models/search/telegramSearch');
-const WhatsAppSearch = require('./models/search/whatsappSearch');
-const SocialMediaSearch = require('./models/search/socialMediaSearch');
+const sequelize = require('./config/database');
+const cors = require('cors');
+const routes = require('./routes/Routes'); // Ensure this path is correct
+require('dotenv').config();
+
 const app = express();
 
+// Middleware
+app.use(cors());  // Enable CORS for all routes
+app.use(express.json()); // Parse JSON request bodies
+app.use(express.urlencoded({ extended: true })); // Parse URL-encoded request bodies
 
-app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
+// Use the API routes
+app.use('/api', routes); // Use the defined routes
 
-// Use the upload routes
-app.use('/api', uploadRoutes);
+// Error handling middleware should be added after all routes
+// app.use(errorHandler); // Uncomment this when you have an error handler
 
+// Authenticate and sync the database
+const startServer = async () => {
+    try {
+        await sequelize.authenticate(); // Authenticate the database connection
+        console.log('Connection has been established successfully.');
+        
+        await sequelize.sync(); // Synchronize the database
+        console.log('Database synchronized.');
+
+        // Start the server
+        const PORT = process.env.PORT || 8000; // Default to port 3000 if not specified
+        app.listen(PORT, () => {
+            console.log(`Server is running on port ${PORT}`);
+        });
+    } catch (error) {
+        console.error('Unable to connect to the database:', error);
+        process.exit(1); // Exit the process with failure
+    }
+};
 
 // Start the server
-const PORT = process.env.PORT || 5000;
-app.listen(PORT, () => {
-    console.log(`Server is running on port ${PORT}`);
-});
+startServer();
+
+module.exports = app; // Export the app for testing or other purposes

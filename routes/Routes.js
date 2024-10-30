@@ -1,15 +1,21 @@
 const express = require('express');
-
-const checkRoutes = require('./checkRoutes');
-const reportRoutes = require('./reportRoutes');
-const uploadRoutes = require('./uploadRoutes');
 const router = express.Router();
-
-// Use the routes with a prefix
-router.use('/report', reportRoutes);
-router.use('/check', checkRoutes);
-router.use('/upload', uploadRoutes);
+const reportController = require('../controllers/reportController');
 
 
+// Create a new report
+router.post('/reports', reportController.createReport);
+
+// Get all reports by type
+router.get('/reports/:type', reportController.getAllReports);
+
+// Get a report by ID
+router.get('/reports/:type/:id', reportController.getReportById);
+
+// Update a report by ID
+router.put('/reports/:type/:id', reportController.updateReportById);
+
+// Delete a report by ID
+router.delete('/reports/:type/:id', reportController.deleteReportById);
 
 module.exports = router;
