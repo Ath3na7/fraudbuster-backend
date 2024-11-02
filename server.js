@@ -1,43 +1,63 @@
 const express = require('express');
 const sequelize = require('./config/database');
 const cors = require('cors');
-const routes = require('./routes/Routes'); // Ensure this path is correct
+const reportRoutes = require('./routes/reportRoutes'); // Ensure this path is correct
+const AppError = require('./utils/AppError');
 require('dotenv').config();
 
 const app = express();
 
-// Middleware
-app.use(cors());  // Enable CORS for all routes
+// Middleware setup
+
+// Configure CORS to allow requests from specific origins or all origins for development
+app.use(cors({
+    origin: process.env.CLIENT_ORIGIN || 'http://localhost:3000', // Set this to your frontend URL in production
+    methods: ['GET', 'POST', 'PUT', 'DELETE'], // Allowed HTTP methods
+    allowedHeaders: ['Content-Type', 'Authorization'] // Specify headers if necessary
+}));
+
 app.use(express.json()); // Parse JSON request bodies
 app.use(express.urlencoded({ extended: true })); // Parse URL-encoded request bodies
 
 // Use the API routes
-app.use('/api', routes); // Use the defined routes
+app.use('/api/reports', reportRoutes); // Connect report routes
 
-// Error handling middleware should be added after all routes
-// app.use(errorHandler); // Uncomment this when you have an error handler
+// Error handling middleware
+app.use((err, req, res, next) => {
+    console.error('Error:', err.stack);
+    const statusCode = err.statusCode || 500;
+    const message = err.isOperational ? err.message : 'Internal Server Error';
+    
+    res.status(statusCode).json({
+        error: {
+            message: message,
+        },
+    });
+});
 
-// Authenticate and sync the database
+// Database connection and server start
 const startServer = async () => {
     try {
-        await sequelize.authenticate(); // Authenticate the database connection
-        console.log('Connection has been established successfully.');
+        // Authenticate database connection
+        await sequelize.authenticate();
+        console.log('Database connection established successfully.');
         
-        await sequelize.sync(); // Synchronize the database
+        // Sync database models
+        await sequelize.sync();
         console.log('Database synchronized.');
 
         // Start the server
-        const PORT = process.env.PORT || 8000; // Default to port 3000 if not specified
+        const PORT = process.env.PORT || 8000;
         app.listen(PORT, () => {
             console.log(`Server is running on port ${PORT}`);
         });
     } catch (error) {
         console.error('Unable to connect to the database:', error);
-        process.exit(1); // Exit the process with failure
+        process.exit(1); // Exit process if connection fails
     }
 };
 
 // Start the server
 startServer();
 
-module.exports = app; // Export the app for testing or other purposes
+module.exports = app; // Export app for testing or other purposes
