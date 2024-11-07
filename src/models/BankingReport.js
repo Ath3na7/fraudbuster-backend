@@ -10,14 +10,6 @@ const BankingReport = sequelize.define('BankingReport', {
             primaryKey: true,
             autoIncrement: true,
         },
-        // scam_id: {
-        //     type: DataTypes.INTEGER,
-        //     references: {
-        //         model: 'reports', 
-        //         key: 'scam_id',
-        //     },
-        //     onDelete: 'CASCADE',
-        // },
         account_name: {
             type: DataTypes.STRING,
             allowNull: false,

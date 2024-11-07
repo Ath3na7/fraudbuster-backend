@@ -3,6 +3,7 @@ const express = require('express');
 const cors = require('cors');
 const helmet = require('helmet');
 const bankingReportRoutes = require('./src/routes/bankingReportRoutes');
+const esewaReportRoutes = require('./src/routes/EsewaReportRoutes');
 const sequelize = require('./src/config/database');
 
 const app = express();
@@ -15,6 +16,7 @@ app.use(express.json());
 
 1// Routes
 app.use('/api', bankingReportRoutes);
+app.use('/api', esewaReportRoutes);
 
 // Error handling middleware
 app.use((err, req, res, next) => {
