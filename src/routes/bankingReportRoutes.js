@@ -2,12 +2,10 @@
 const express = require('express');
 const router = express.Router();
 const bankingReportController = require('../controllers/BankingReportController');
-const { validateReport } = require('../middleware/validations');
+const { validateReport } = require('../middleware/validation/bankingReport');
 
-router.post('/reports', validateReport, bankingReportController.createReport);
+router.post('/reports/bank', validateReport, bankingReportController.createReport);
 
-router.get('/reports', bankingReportController.getAllReports);
-
-router.post('/reports/validate', validateReport, bankingReportController.validateReport);
+router.post('/reports/bank/validate', validateReport, bankingReportController.validateReport);
 
 module.exports = router;
