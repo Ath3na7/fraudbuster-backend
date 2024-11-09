@@ -1,0 +1,8 @@
+---
+deployment:
+  tasks:
+    - export DEPLOYPATH=/home/fraudbus/public_html/FB-backend/
+    - cd /home/fraudbus/public_html/FB-backend
+    - npm install # Install dependencies
+    - npm run build # Run the build script (if applicable, like for TypeScript or Webpack)
+    - pm2 restart FB-backend # Restart the backend server using pm2 (or use forever, node, or other methods)
